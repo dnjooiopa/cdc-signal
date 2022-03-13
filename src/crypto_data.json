@@ -1,0 +1,13 @@
+{
+    "exchangeSymbols": [
+        {
+            "symbol": "btcusdt",
+            "exchange": "binance"
+        },
+        {
+            "symbol": "ethusdt",
+            "exchange": "binance"
+        }
+    ],
+    "cryptos": []
+}
