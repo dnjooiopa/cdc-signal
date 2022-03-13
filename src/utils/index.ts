@@ -3,7 +3,7 @@ import axios from 'axios';
 const TIME_IDX = 0;
 const CLOSING_PRICE_IDX = 4;
 
-export async function getOHLCs(url) {
+export async function getOHLCs(url): Promise<number[]> {
   try {
     const response = await axios.get(url, {
       params: {
@@ -14,11 +14,11 @@ export async function getOHLCs(url) {
     return response.data.result['86400'];
   } catch (err) {
     console.log('🔴 makeRequest error:', err.message);
-    return undefined;
+    return [];
   }
 }
 
-export function calculateEMAs(prices: number[], length: number, smoothing = 2) {
+export function calculateEMAs(prices: number[], length: number, smoothing = 2): number[] {
   let EMAs = [];
   const k = smoothing / (length + 1);
 
@@ -28,3 +28,5 @@ export function calculateEMAs(prices: number[], length: number, smoothing = 2) {
   }
   return EMAs;
 }
+
+export function getSignal() {}
