@@ -2,6 +2,7 @@ import { Client, Intents } from 'discord.js';
 import { init } from './app';
 
 import config from './config';
+import { getLocaleString } from './utils/date';
 
 const client = new Client({
     intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES],
@@ -14,7 +15,7 @@ client.on('ready', () => {
 client.on('messageCreate', (interaction) => {
     const commands = interaction.channel.lastMessage.content.split(' ');
     if (commands[0] === '!cdc') {
-        const timeStr = new Date().toLocaleString('en-US', { timeZone: 'Asia/Bangkok' });
+        const timeStr = getLocaleString();
         console.log('Time:', timeStr);
         console.log('Commands:', commands.join(' '));
 
