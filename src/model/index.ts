@@ -3,12 +3,16 @@ export interface Crypto {
     exchange: string;
     times: number[];
     closingPrices: number[];
-    ema12s: number[];
-    ema26s: number[];
+    fastEMAs: number[];
+    slowEMAs: number[];
 }
 
+interface ExchangeSymbol {
+    symbol: string;
+    exchange: string;
+}
 export interface GlobalState {
-    symbols: string[];
+    exchangeSymbols: ExchangeSymbol[];
     cryptos: Crypto[];
 }
 
