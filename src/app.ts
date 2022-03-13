@@ -2,10 +2,9 @@ import path from 'path';
 import { calculateEMAs, getOHLCs, getSignal } from 'src/utils';
 import { fileExists, readFile, saveFile } from 'src/utils/file';
 
-import { GlobalState } from './model';
+import global from './global';
 import { SignalType } from './model/index';
 
-export let globalStates: GlobalState | undefined;
 const TIME_IDX = 0;
 const CLOSING_PRICE_IDX = 4;
 const DATA_PATH = path.join(__dirname, 'data.json');
@@ -15,17 +14,17 @@ export async function init() {
         const defaultData = readFile(path.join(__dirname, 'data.default.json'));
         saveFile(DATA_PATH, defaultData);
     }
-    globalStates = JSON.parse(readFile(DATA_PATH));
+    global.state = JSON.parse(readFile(DATA_PATH));
     await update();
 }
 
-async function update() {
-    for (const exchangeSymbol of globalStates.exchangeSymbols) {
+export async function update() {
+    for (const exchangeSymbol of global.state.exchangeSymbols) {
         const { exchange, symbol } = exchangeSymbol;
-        console.log('----------------------------------------------');
+        console.log('---------------------------------------------');
         console.log('Fetching', exchange, symbol);
 
-        const crypto = globalStates.cryptos.find((c) => c.symbol === symbol);
+        const crypto = global.state.cryptos.find((c) => c.symbol === symbol);
         if (crypto && crypto.times[crypto.times.length - 1] > new Date().getTime()) {
             console.log('Already updated', exchange, symbol);
             continue;
@@ -54,7 +53,7 @@ async function update() {
             signals.push(signal);
         }
 
-        globalStates.cryptos.push({
+        global.state.cryptos.push({
             symbol,
             exchange,
             times,
@@ -67,5 +66,5 @@ async function update() {
         console.log('Successfully fetched', exchange, symbol);
     }
     console.log('----------------------------------------------');
-    saveFile(DATA_PATH, JSON.stringify(globalStates));
+    saveFile(DATA_PATH, JSON.stringify(global.state));
 }

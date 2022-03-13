@@ -2,6 +2,7 @@ import axios from 'axios';
 
 import { Crypto, SignalType } from '../model/index';
 import { getDateFromTime, getLocaleString } from './date';
+import global from '../global';
 
 const TIME_FRAME = '86400';
 
@@ -43,8 +44,9 @@ export function getSignal(fastEma: number, fastEmaPrev: number, slowEma: number,
     }
 }
 
-export function getSignalMessage(cryptos: Crypto[], dayOffset: number = 2): string {
+export function getSignalMessage(dayOffset: number = 2): string {
     let msg = `🚀 Automatic update: ${getLocaleString()}`;
+    const { cryptos } = global.state;
 
     for (let idx = 0; idx < cryptos.length; idx++) {
         const crypto = cryptos[idx];

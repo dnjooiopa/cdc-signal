@@ -1,4 +1,4 @@
-import { globalStates, init } from '../src/app';
+import { init } from '../src/app';
 import { calculateEMAs, getOHLCs, getSignal, getSignalMessage } from '../src/utils';
 
 const TIME_IDX = 0;
@@ -31,6 +31,6 @@ const CLOSING_PRICE_IDX = 4;
     }
 
     console.log('🧪 getSignalMessage');
-    const signalMessage = getSignalMessage(globalStates.cryptos);
+    const signalMessage = getSignalMessage();
     console.log(signalMessage);
 })();
