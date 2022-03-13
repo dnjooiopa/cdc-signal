@@ -13,11 +13,16 @@ client.on('ready', () => {
 client.on('messageCreate', (interaction) => {
   const commands = interaction.channel.lastMessage.content.split(' ');
   if (commands[0] === '!cdc') {
-    console.log('Time:', new Date());
+    const timeStr = new Date().toLocaleString('en-US', { timeZone: 'Asia/Bangkok' });
+    console.log('Time:', timeStr);
     console.log('Commands:', commands.join(' '));
 
     if (commands.length === 1) {
       interaction.channel.send('Hello from CDC Signal🚀');
+    } else if (commands.length === 2) {
+      if (commands[1] === 'time') {
+        interaction.channel.send(timeStr);
+      }
     }
   }
 });
