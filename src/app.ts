@@ -1,6 +1,7 @@
 import { SignalType } from './model/index';
 import path from 'path';
-import { calculateEMAs, fileExists, getOHLCs, getSignal, readFile, saveFile } from 'src/utils';
+import { calculateEMAs, getOHLCs, getSignal } from 'src/utils';
+import { fileExists, readFile, saveFile } from 'src/utils/file';
 
 import { GlobalState } from './model';
 
