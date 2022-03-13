@@ -10,6 +10,6 @@ RUN npm run build
 FROM node:17-alpine
 WORKDIR /app
 COPY package*.json ./
-RUN npm install
+RUN npm install --only=production
 COPY --from=0 /app/build /app/
-CMD ["node", "./src/index.js"]
+CMD ["node", "."]
