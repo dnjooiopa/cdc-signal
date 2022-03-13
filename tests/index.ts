@@ -5,7 +5,10 @@ const TIME_IDX = 0;
 const CLOSING_PRICE_IDX = 4;
 
 (async () => {
+    const start = new Date().getTime();
     await init();
+    const end = new Date().getTime();
+    console.log('Fetching time:', (end - start) / 1000, 'seconds.');
 
     console.log('🧪 makeRequest');
 
