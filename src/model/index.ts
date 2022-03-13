@@ -5,6 +5,7 @@ export interface Crypto {
     closingPrices: number[];
     fastEMAs: number[];
     slowEMAs: number[];
+    signals: SignalType[];
 }
 
 interface ExchangeSymbol {

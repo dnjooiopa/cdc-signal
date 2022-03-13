@@ -1,6 +1,6 @@
-import fs from 'fs';
+import { SignalType } from './model/index';
 import path from 'path';
-import { calculateEMAs, getOHLCs, readFile, saveFile, fileExists } from 'src/utils';
+import { calculateEMAs, fileExists, getOHLCs, getSignal, readFile, saveFile } from 'src/utils';
 
 import { GlobalState } from './model';
 
@@ -36,11 +36,19 @@ async function update() {
         }
 
         const closingPrices = ohlcs.map((o) => o[CLOSING_PRICE_IDX]);
+
         const slowLength = 26;
         const fastLength = 12;
         const slowEMAs = calculateEMAs(closingPrices, slowLength);
         const fastEMAs = calculateEMAs(closingPrices, fastLength).slice(slowLength - fastLength);
+
         const times = ohlcs.map((o) => o[TIME_IDX] * 1000).slice(slowLength - 1);
+
+        let signals: SignalType[] = ['none'];
+        for (let idx = 1; idx < times.length; idx++) {
+            const signal = getSignal(fastEMAs[idx], fastEMAs[idx - 1], slowEMAs[idx], slowEMAs[idx - 1]);
+            signals.push(signal);
+        }
 
         globalStates.cryptos.push({
             symbol,
@@ -49,6 +57,7 @@ async function update() {
             closingPrices,
             fastEMAs,
             slowEMAs,
+            signals,
         });
 
         console.log('Successfully fetched', exchange, symbol);
