@@ -1,12 +1,13 @@
-import { calculateEMAs, getOHLCs, getSignal } from '../src/utils';
+import { globalStates, init } from '../src/app';
+import { calculateEMAs, getOHLCs, getSignal, getSignalMessage } from '../src/utils';
 
 const TIME_IDX = 0;
 const CLOSING_PRICE_IDX = 4;
 
 (async () => {
+    await init();
+
     console.log('🧪 makeRequest');
-    const name = 'btc';
-    const pair = 'usdt';
 
     const OHLCs = await getOHLCs('binance', 'btcusdt');
     console.log(OHLCs[0]);
@@ -25,4 +26,8 @@ const CLOSING_PRICE_IDX = 4;
         const signal = getSignal(fastEMAs[idx], fastEMAs[idx - 1], slowEMAs[idx], slowEMAs[idx - 1]);
         console.log(new Date(times[idx]), signal);
     }
+
+    console.log('🧪 getSignalMessage');
+    const signalMessage = getSignalMessage(globalStates.cryptos);
+    console.log(signalMessage);
 })();
