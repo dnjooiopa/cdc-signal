@@ -1,8 +1,7 @@
 import { SignalType } from './../model/index';
 import axios from 'axios';
+import fs from 'fs';
 
-const TIME_IDX = 0;
-const CLOSING_PRICE_IDX = 4;
 const TIME_FRAME = '86400';
 
 export async function getOHLCs(exchange: string, symbol: string): Promise<any[]> {
@@ -21,8 +20,6 @@ export async function getOHLCs(exchange: string, symbol: string): Promise<any[]>
         return [];
     }
 }
-
-export function getCrypto(symbol: string) {}
 
 export function calculateEMAs(prices: number[], length: number, smoothing = 2): number[] {
     let EMAs = [];
@@ -43,4 +40,16 @@ export function getSignal(fastEma: number, fastEmaPrev: number, slowEma: number,
     } else {
         return 'none';
     }
+}
+
+export function saveFile(path: string, data: string) {
+    fs.writeFileSync(path, data);
+}
+
+export function readFile(path: string): string {
+    return fs.readFileSync(path, 'utf8');
+}
+
+export function fileExists(path: string): boolean {
+    return fs.existsSync(path);
 }
