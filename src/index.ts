@@ -1,7 +1,8 @@
 import { Client, Intents } from 'discord.js';
-import { init } from './app';
+import { init, update } from './app';
 
 import config from './config';
+import { getSignalMessage } from './utils';
 import { getLocaleString } from './utils/date';
 
 const client = new Client({
@@ -12,10 +13,11 @@ client.on('ready', () => {
     console.log(`🟢 Client Logged in as ${client.user.tag}`);
 });
 
-client.on('messageCreate', (interaction) => {
+client.on('messageCreate', async (interaction) => {
     const commands = interaction.channel.lastMessage.content.split(' ');
     if (commands[0] === '!cdc') {
         const timeStr = getLocaleString();
+        console.log('------------- Incoming Command -------------');
         console.log('Time:', timeStr);
         console.log('Commands:', commands.join(' '));
 
@@ -24,6 +26,10 @@ client.on('messageCreate', (interaction) => {
         } else if (commands.length === 2) {
             if (commands[1] === 'time') {
                 interaction.channel.send(timeStr);
+            } else if (commands[1] === 'update') {
+                await update();
+                const msg = getSignalMessage();
+                interaction.channel.send(msg);
             }
         }
     }
