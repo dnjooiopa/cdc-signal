@@ -1,6 +1,9 @@
 import axios from 'axios';
 
-export async function getOHLC(url) {
+const TIME_IDX = 0;
+const CLOSING_PRICE_IDX = 4;
+
+export async function getOHLCs(url) {
   try {
     const response = await axios.get(url, {
       params: {
@@ -13,4 +16,15 @@ export async function getOHLC(url) {
     console.log('🔴 makeRequest error:', err.message);
     return undefined;
   }
+}
+
+export function calculateEMAs(prices: number[], length: number, smoothing = 2) {
+  let EMAs = [];
+  const k = smoothing / (length + 1);
+
+  EMAs.push(prices.slice(0, length).reduce((total, current) => total + current, 0) / length);
+  for (const price of prices.slice(length)) {
+    EMAs.push(price * k + EMAs[EMAs.length - 1] * (1 - k));
+  }
+  return EMAs;
 }
