@@ -22,6 +22,7 @@ export async function init() {
 async function update() {
     for (const exchangeSymbol of globalStates.exchangeSymbols) {
         const { exchange, symbol } = exchangeSymbol;
+        console.log('----------------------------------------------');
         console.log('Fetching', exchange, symbol);
 
         const crypto = globalStates.cryptos.find((c) => c.symbol === symbol);
@@ -65,5 +66,6 @@ async function update() {
 
         console.log('Successfully fetched', exchange, symbol);
     }
+    console.log('----------------------------------------------');
     saveFile(DATA_PATH, JSON.stringify(globalStates));
 }
