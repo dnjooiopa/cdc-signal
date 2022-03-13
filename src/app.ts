@@ -35,12 +35,14 @@ async function update() {
             continue;
         }
 
-        const closingPrices = ohlcs.map((o) => o[CLOSING_PRICE_IDX]);
+        let closingPrices = ohlcs.map((o) => o[CLOSING_PRICE_IDX]);
 
         const slowLength = 26;
         const fastLength = 12;
         const slowEMAs = calculateEMAs(closingPrices, slowLength);
         const fastEMAs = calculateEMAs(closingPrices, fastLength).slice(slowLength - fastLength);
+
+        closingPrices = closingPrices.slice(slowLength - 1);
 
         const times = ohlcs.map((o) => o[TIME_IDX] * 1000).slice(slowLength - 1);
 
