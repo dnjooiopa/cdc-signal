@@ -9,7 +9,7 @@ export async function getOHLCs(url): Promise<number[]> {
     try {
         const options = {
             params: {
-                after: (new Date().getTime() / 1000 - 86400 * 180).toFixed(0),
+                after: (new Date().getTime() / 1000 - 86400 * 60).toFixed(0),
                 periods: TIME_FRAME,
             },
         };
