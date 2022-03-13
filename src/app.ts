@@ -1,11 +1,11 @@
-import { SignalType } from './model/index';
 import path from 'path';
 import { calculateEMAs, getOHLCs, getSignal } from 'src/utils';
 import { fileExists, readFile, saveFile } from 'src/utils/file';
 
 import { GlobalState } from './model';
+import { SignalType } from './model/index';
 
-let globalStates: GlobalState | undefined;
+export let globalStates: GlobalState | undefined;
 const TIME_IDX = 0;
 const CLOSING_PRICE_IDX = 4;
 const DATA_PATH = path.join(__dirname, 'data.json');
