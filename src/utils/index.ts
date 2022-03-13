@@ -5,8 +5,9 @@ const TIME_IDX = 0;
 const CLOSING_PRICE_IDX = 4;
 const TIME_FRAME = '86400';
 
-export async function getOHLCs(url): Promise<number[]> {
+export async function getOHLCs(exchange: string, symbol: string): Promise<any[]> {
     try {
+        const url = `https://api.cryptowat.ch/markets/${exchange}/${symbol}/ohlc`;
         const options = {
             params: {
                 after: (new Date().getTime() / 1000 - 86400 * 60).toFixed(0),
@@ -20,6 +21,8 @@ export async function getOHLCs(url): Promise<number[]> {
         return [];
     }
 }
+
+export function getCrypto(symbol: string) {}
 
 export function calculateEMAs(prices: number[], length: number, smoothing = 2): number[] {
     let EMAs = [];

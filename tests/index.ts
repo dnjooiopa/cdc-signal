@@ -8,7 +8,7 @@ const CLOSING_PRICE_IDX = 4;
     const name = 'btc';
     const pair = 'usdt';
 
-    const OHLCs = await getOHLCs(`https://api.cryptowat.ch/markets/binance/${name}${pair}/ohlc`);
+    const OHLCs = await getOHLCs('binance', 'btcusdt');
     console.log(OHLCs[0]);
 
     console.log('🧪 calculateEMAs');
