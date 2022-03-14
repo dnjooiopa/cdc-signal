@@ -1,9 +1,9 @@
 import path from 'path';
-import { calculateEMAs, getOHLCs, getSignal } from 'src/utils';
-import { fileExists, readFile, saveFile } from 'src/utils/file';
 
 import global from './global';
 import { SignalType } from './model/index';
+import { calculateEMAs, getOHLCs, getSignal } from './utils';
+import { fileExists, readFile, saveFile } from './utils/file';
 
 const TIME_IDX = 0;
 const CLOSING_PRICE_IDX = 4;

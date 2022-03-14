@@ -6,7 +6,9 @@
         "rootDir": "./",
         "baseUrl": "./",
         "esModuleInterop": true,
-        "skipLibCheck": true
+        "skipLibCheck": true,
+        "resolveJsonModule": true
     },
+    "include": ["./src/data.default.json", "./src/*.ts"],
     "exclude": ["node_modules", "**/*.spec.ts", "tests"]
 }
