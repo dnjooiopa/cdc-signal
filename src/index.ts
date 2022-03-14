@@ -56,7 +56,6 @@ async function sendUpdateSignal() {
     try {
         await init();
         await client.login(config.CLIENT_TOKEN);
-        console.log(config.UPDATE_TIME);
         cron.schedule(config.UPDATE_TIME, sendUpdateSignal);
     } catch (err) {
         console.log('🔴 Application initialization error:', err);
