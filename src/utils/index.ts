@@ -2,7 +2,7 @@ import axios from 'axios';
 
 import config from '../config';
 import global from '../global';
-import { SignalType } from '../model/index';
+import { SignalObject, SignalType } from '../model/index';
 import { getDateFromTime, getLocaleString } from './date';
 
 const TIME_FRAME = '86400';
@@ -66,4 +66,25 @@ export function getSignalMessage(dayOffset: number = 2): string {
     }
 
     return msg;
+}
+
+export function getSignalObject(): SignalObject[] {
+    const signals: SignalObject[] = [];
+    const { cryptos } = global.state;
+
+    for (let idx = 0; idx < cryptos.length; idx++) {
+        const crypto = cryptos[idx];
+        const dayIdx = crypto.signals.length - 2;
+        const signalType = crypto.signals[dayIdx];
+
+        if (signalType !== 'none') {
+            signals.push({
+                name: crypto.symbol.replace('usdt', ''),
+                pair: 'busd',
+                order: signalType,
+            });
+        }
+    }
+
+    return signals;
 }
