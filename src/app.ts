@@ -53,6 +53,7 @@ export async function update() {
             signals.push(signal);
         }
 
+        global.state.cryptos = global.state.cryptos.filter((c) => c.symbol !== symbol);
         global.state.cryptos.push({
             symbol,
             exchange,
