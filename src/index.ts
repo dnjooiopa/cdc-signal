@@ -1,6 +1,7 @@
-import { Client, Intents } from 'discord.js';
-import { init, update } from './app';
+import { Client, Intents, TextChannel } from 'discord.js';
+import cron from 'node-cron';
 
+import { init, update } from './app';
 import config from './config';
 import { getSignalMessage } from './utils';
 import { getLocaleString } from './utils/date';
@@ -35,6 +36,15 @@ client.on('messageCreate', async (interaction) => {
     }
 });
 
-client.login(config.CLIENT_TOKEN);
+async function sendUpdateSignal() {
+    update();
+    console.log(getLocaleString(), ': 🚀 send update signal');
+    const msg = getSignalMessage();
+    ((await client.channels.cache.get(config.SIGNAL_CHANNEL)) as TextChannel).send(msg);
+}
 
-init();
+(async () => {
+    await init();
+    await client.login(config.CLIENT_TOKEN);
+    cron.schedule(config.UPDATE_TIME, sendUpdateSignal);
+})();
