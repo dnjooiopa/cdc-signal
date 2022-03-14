@@ -17,4 +17,10 @@ export interface GlobalState {
     cryptos: Crypto[];
 }
 
+export interface SignalObject {
+    name: string;
+    pair: string;
+    order: SignalType;
+}
+
 export type SignalType = 'none' | 'buy' | 'sell';
