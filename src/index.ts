@@ -42,14 +42,24 @@ client.on('messageCreate', async (interaction) => {
 });
 
 async function sendUpdateSignal() {
-    update();
-    console.log(getLocaleString(), ': 🚀 send update signal');
-    const msg = getSignalMessage();
-    ((await client.channels.cache.get(config.SIGNAL_CHANNEL)) as TextChannel).send(msg);
+    try {
+        update();
+        console.log(getLocaleString(), ': 🚀 send update signal');
+        const msg = getSignalMessage();
+        ((await client.channels.cache.get(config.SIGNAL_CHANNEL)) as TextChannel).send(msg);
+    } catch (err) {
+        console.log(getLocaleString(), ': 🔴 Automatic update error:', err.message);
+    }
 }
 
 (async () => {
-    await init();
-    await client.login(config.CLIENT_TOKEN);
-    cron.schedule(config.UPDATE_TIME, sendUpdateSignal);
+    try {
+        await init();
+        await client.login(config.CLIENT_TOKEN);
+        console.log(config.UPDATE_TIME);
+        cron.schedule(config.UPDATE_TIME, sendUpdateSignal);
+    } catch (err) {
+        console.log('🔴 Application initialization error:', err);
+        process.exit();
+    }
 })();
