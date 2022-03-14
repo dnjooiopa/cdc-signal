@@ -15,7 +15,7 @@ export async function publish(msg: string) {
 
         await client.publish('cdc/signal', msg);
         await client.end();
-        console.log(getLocaleString(), '🚀 Message published to mqtt host');
+        console.log(getLocaleString(), ': 🚀 Message published to mqtt host');
     } catch (err) {
         console.log(`🔴 MQTT error:`, err.message);
     }
