@@ -1,8 +1,9 @@
 import axios from 'axios';
 
-import { Crypto, SignalType } from '../model/index';
-import { getDateFromTime, getLocaleString } from './date';
+import config from '../config';
 import global from '../global';
+import { SignalType } from '../model/index';
+import { getDateFromTime, getLocaleString } from './date';
 
 const TIME_FRAME = '86400';
 
@@ -13,6 +14,7 @@ export async function getOHLCs(exchange: string, symbol: string): Promise<any[]>
             params: {
                 after: (new Date().getTime() / 1000 - 86400 * 60).toFixed(0),
                 periods: TIME_FRAME,
+                apiKey: config.API_KEY,
             },
         };
         const response = await axios.get(url, options);
