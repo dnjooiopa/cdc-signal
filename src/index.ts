@@ -3,7 +3,8 @@ import cron from 'node-cron';
 
 import { init, update } from './app';
 import config from './config';
-import { getSignalMessage } from './utils';
+import { publish } from './mqtt';
+import { getSignalMessage, getSignalObject } from './utils';
 import { getLocaleString } from './utils/date';
 
 const client = new Client({
@@ -31,6 +32,10 @@ client.on('messageCreate', async (interaction) => {
                 await update();
                 const msg = getSignalMessage();
                 interaction.channel.send(msg);
+            } else if (commands[1] === 'trader') {
+                const signals = getSignalObject();
+                publish(JSON.stringify(signals));
+                interaction.channel.send('🚀 publish signals');
             }
         }
     }
