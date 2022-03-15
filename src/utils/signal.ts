@@ -52,3 +52,29 @@ export function getSignalObject(): SignalObject[] {
     }
     return signals;
 }
+
+export function getAllSignal(dayOffset: number = 2): string {
+    let msg = `🚀 All signals: ${getLocaleString()}`;
+    const { cryptos } = global.state;
+
+    for (let idx = 0; idx < cryptos.length; idx++) {
+        const crypto = cryptos[idx];
+        const dayIdx = crypto.signals.length - dayOffset;
+        const signal = crypto.signals[dayIdx];
+
+        const closingPrice = crypto.closingPrices[dayIdx];
+
+        const time = crypto.times[dayIdx];
+        const dateStr = getDateFromTime(time);
+
+        const emoji = {
+            buy: '🟢',
+            sell: '🔴',
+            none: '',
+        };
+        msg += `\n ${dateStr} | ${crypto.exchange.toUpperCase()} | ${crypto.symbol.toUpperCase()} | ${signal.toUpperCase()} ${
+            emoji[signal]
+        } at ${closingPrice}$`;
+    }
+    return msg;
+}

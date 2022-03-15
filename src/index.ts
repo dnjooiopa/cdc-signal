@@ -7,7 +7,7 @@ import { publish } from './mqtt';
 import { addSymbol, removeSymbol, update } from './utils';
 import { getLocaleString } from './utils/date';
 import { sendMessage } from './utils/discord';
-import { getSignalMessage, getSignalObject } from './utils/signal';
+import { getAllSignal, getSignalMessage, getSignalObject } from './utils/signal';
 
 const client = new Client({
     intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES],
@@ -39,6 +39,9 @@ client.on('messageCreate', async (interaction) => {
                 const signals = getSignalObject();
                 publish(JSON.stringify(signals));
                 sendMessage(interaction.channel, '🚀 publish signals');
+            } else if (commands[1] === 'signal') {
+                const msg = getAllSignal();
+                sendMessage(interaction.channel, msg);
             }
         } else if (commands.length === 4) {
             if (commands[1] === 'add') {
