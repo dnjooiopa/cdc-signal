@@ -3,6 +3,7 @@ import cron from 'node-cron';
 
 import { init } from './app';
 import config from './config';
+import global from './global';
 import { publish } from './mqtt';
 import { addSymbol, removeSymbol, update } from './utils';
 import { getLocaleString } from './utils/date';
@@ -26,7 +27,7 @@ client.on('messageCreate', async (interaction) => {
         console.log('Commands:', commands.join(' '));
 
         if (commands.length === 1) {
-            interaction.channel.send('Hello from CDC Signal🚀');
+            interaction.channel.send(`Hello from CDC Signal🚀${global.info}`);
         } else if (commands.length === 2) {
             if (commands[1] === 'time') {
                 sendMessage(interaction.channel, timeStr);
