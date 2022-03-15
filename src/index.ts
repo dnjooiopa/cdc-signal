@@ -4,9 +4,10 @@ import cron from 'node-cron';
 import { init } from './app';
 import config from './config';
 import { publish } from './mqtt';
-import { addSymbol, getSignalMessage, getSignalObject, removeSymbol, update } from './utils';
+import { addSymbol, removeSymbol, update } from './utils';
 import { getLocaleString } from './utils/date';
 import { sendMessage } from './utils/discord';
+import { getSignalMessage, getSignalObject } from './utils/signal';
 
 const client = new Client({
     intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES],
