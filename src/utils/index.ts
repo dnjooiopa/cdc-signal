@@ -152,7 +152,7 @@ export async function addSymbol(exchange: string, symbol: string): Promise<strin
     if (!existingSymbol) {
         const ohlcs = await getOHLCs(exchange.toLowerCase(), symbol.toLowerCase());
         if (ohlcs.length < 30) {
-            msg = `🔴 Length too short or symbol not found: \`${exchange.toUpperCase()}|${symbol.toUpperCase()}\``;
+            msg = `Length too short or symbol not found: \`${exchange.toUpperCase()}|${symbol.toUpperCase()}\``;
         } else {
             global.state.exchangeSymbols.push({
                 exchange,
