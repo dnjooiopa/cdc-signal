@@ -4,7 +4,7 @@ import cron from 'node-cron';
 import { init } from './app';
 import config from './config';
 import { publish } from './mqtt';
-import { addSymbol, getSignalMessage, getSignalObject, update } from './utils';
+import { addSymbol, getSignalMessage, getSignalObject, removeSymbol, update } from './utils';
 import { getLocaleString } from './utils/date';
 import { sendMessage } from './utils/discord';
 
@@ -42,6 +42,9 @@ client.on('messageCreate', async (interaction) => {
         } else if (commands.length === 4) {
             if (commands[1] === 'add') {
                 const msg = await addSymbol(commands[2], commands[3]);
+                sendMessage(interaction.channel, msg);
+            } else if (commands[1] === 'remove') {
+                const msg = await removeSymbol(commands[2], commands[3]);
                 sendMessage(interaction.channel, msg);
             }
         }

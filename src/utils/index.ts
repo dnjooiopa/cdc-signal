@@ -159,8 +159,27 @@ export async function addSymbol(exchange: string, symbol: string): Promise<strin
                 symbol,
             });
             await update();
-            msg = `symbol \`${exchange.toUpperCase()}|${symbol.toUpperCase()}\` has been added.`;
+            msg = `\`${exchange.toUpperCase()}|${symbol.toUpperCase()}\` has been added.`;
         }
+    }
+    return msg;
+}
+
+export async function removeSymbol(exchange: string, symbol: string): Promise<string> {
+    const existingSymbol = global.state.exchangeSymbols.find(
+        (es) => es.symbol === symbol.toLowerCase() && es.exchange === exchange.toLowerCase()
+    );
+    let msg = `\`${exchange.toUpperCase()}|${symbol.toUpperCase()}\` is not existed.`;
+    if (existingSymbol) {
+        const { exchangeSymbols, cryptos } = global.state;
+        global.state.exchangeSymbols = exchangeSymbols.filter(
+            (es) => !(es.symbol === symbol.toLowerCase() && es.exchange === exchange.toLowerCase())
+        );
+        global.state.cryptos = cryptos.filter(
+            (c) => !(c.symbol === symbol.toLowerCase() && c.exchange === exchange.toLowerCase())
+        );
+        saveFile(global.DATA_PATH, JSON.stringify(global.state));
+        msg = `\`${exchange.toUpperCase()}|${symbol.toUpperCase()}\` has been removed.`;
     }
     return msg;
 }
