@@ -1,10 +1,10 @@
 import { Client, Intents, TextChannel } from 'discord.js';
 import cron from 'node-cron';
 
-import { init, update } from './app';
+import { init } from './app';
 import config from './config';
 import { publish } from './mqtt';
-import { getSignalMessage, getSignalObject } from './utils';
+import { addSymbol, getSignalMessage, getSignalObject, update } from './utils';
 import { getLocaleString } from './utils/date';
 import { sendMessage } from './utils/discord';
 
@@ -38,6 +38,11 @@ client.on('messageCreate', async (interaction) => {
                 const signals = getSignalObject();
                 publish(JSON.stringify(signals));
                 sendMessage(interaction.channel, '🚀 publish signals');
+            }
+        } else if (commands.length === 4) {
+            if (commands[1] === 'add') {
+                const msg = await addSymbol(commands[2], commands[3]);
+                sendMessage(interaction.channel, msg);
             }
         }
     }
