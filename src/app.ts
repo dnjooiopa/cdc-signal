@@ -7,7 +7,7 @@ import { fileExists, readFile, saveFile } from './utils/file';
 
 const TIME_IDX = 0;
 const CLOSING_PRICE_IDX = 4;
-const DATA_PATH = path.join(__dirname, 'data.json');
+const DATA_PATH = path.join(path.resolve(__dirname, '..'), 'data', 'data.json');
 
 export async function init() {
     if (!fileExists(DATA_PATH)) {
