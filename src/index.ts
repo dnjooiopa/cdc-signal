@@ -6,6 +6,7 @@ import config from './config';
 import { publish } from './mqtt';
 import { getSignalMessage, getSignalObject } from './utils';
 import { getLocaleString } from './utils/date';
+import { sendMessage } from './utils/discord';
 
 const client = new Client({
     intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES],
@@ -27,15 +28,16 @@ client.on('messageCreate', async (interaction) => {
             interaction.channel.send('Hello from CDC Signal🚀');
         } else if (commands.length === 2) {
             if (commands[1] === 'time') {
-                interaction.channel.send(timeStr);
+                sendMessage(interaction.channel, timeStr);
             } else if (commands[1] === 'update') {
                 await update();
                 const msg = getSignalMessage();
-                interaction.channel.send(msg);
+                sendMessage(interaction.channel, msg);
+                console.log(getLocaleString(), ': 🚀 send update signal');
             } else if (commands[1] === 'trader') {
                 const signals = getSignalObject();
                 publish(JSON.stringify(signals));
-                interaction.channel.send('🚀 publish signals');
+                sendMessage(interaction.channel, '🚀 publish signals');
             }
         }
     }
@@ -43,10 +45,15 @@ client.on('messageCreate', async (interaction) => {
 
 async function sendUpdateSignal() {
     try {
-        update();
-        console.log(getLocaleString(), ': 🚀 send update signal');
+        await update();
+        console.log(getLocaleString(), ': 🚀 Automatic update signal');
+
+        const signals = getSignalObject();
+        publish(JSON.stringify(signals));
+
         const msg = getSignalMessage();
-        ((await client.channels.cache.get(config.SIGNAL_CHANNEL)) as TextChannel).send(msg);
+        const channel = (await client.channels.cache.get(config.SIGNAL_CHANNEL)) as TextChannel;
+        sendMessage(channel, msg);
     } catch (err) {
         console.log(getLocaleString(), ': 🔴 Automatic update error:', err.message);
     }
