@@ -92,12 +92,10 @@ export function calculateEMAs(prices: number[], length: number, smoothing = 2): 
 }
 
 export async function addSymbol(exchange: string, symbol: string): Promise<string> {
-    const existingSymbol = global.state.exchangeSymbols.find(
-        (es) => es.symbol === symbol.toLowerCase() && es.exchange === exchange.toLowerCase()
-    );
+    const existingSymbol = global.state.exchangeSymbols.find((es) => es.symbol === symbol && es.exchange === exchange);
     let msg = `\`${exchange.toUpperCase()}|${symbol.toUpperCase()}\` is already existed.`;
     if (!existingSymbol) {
-        const ohlcs = await getOHLCs(exchange.toLowerCase(), symbol.toLowerCase());
+        const ohlcs = await getOHLCs(exchange, symbol);
         if (ohlcs.length < 30) {
             msg = `Length too short or symbol not found: \`${exchange.toUpperCase()}|${symbol.toUpperCase()}\``;
         } else {
@@ -113,18 +111,14 @@ export async function addSymbol(exchange: string, symbol: string): Promise<strin
 }
 
 export async function removeSymbol(exchange: string, symbol: string): Promise<string> {
-    const existingSymbol = global.state.exchangeSymbols.find(
-        (es) => es.symbol === symbol.toLowerCase() && es.exchange === exchange.toLowerCase()
-    );
+    const existingSymbol = global.state.exchangeSymbols.find((es) => es.symbol === symbol && es.exchange === exchange);
     let msg = `\`${exchange.toUpperCase()}|${symbol.toUpperCase()}\` is not existed.`;
     if (existingSymbol) {
         const { exchangeSymbols, cryptos } = global.state;
         global.state.exchangeSymbols = exchangeSymbols.filter(
-            (es) => !(es.symbol === symbol.toLowerCase() && es.exchange === exchange.toLowerCase())
+            (es) => !(es.symbol === symbol && es.exchange === exchange)
         );
-        global.state.cryptos = cryptos.filter(
-            (c) => !(c.symbol === symbol.toLowerCase() && c.exchange === exchange.toLowerCase())
-        );
+        global.state.cryptos = cryptos.filter((c) => !(c.symbol === symbol && c.exchange === exchange));
         saveFile(global.DATA_PATH, JSON.stringify(global.state));
         msg = `\`${exchange.toUpperCase()}|${symbol.toUpperCase()}\` has been removed.`;
     }

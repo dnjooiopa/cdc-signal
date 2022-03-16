@@ -19,7 +19,7 @@ client.on('ready', () => {
 });
 
 client.on('messageCreate', async (interaction) => {
-    const commands = interaction.channel.lastMessage.content.split(' ');
+    const commands = interaction.channel.lastMessage.content.toLowerCase().split(' ');
     if (commands[0] === '!cdc') {
         const timeStr = getLocaleString();
         console.log('------------- Incoming Command -------------');
