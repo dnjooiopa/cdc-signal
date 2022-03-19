@@ -1,5 +1,7 @@
 import { init } from '../src/app';
-import { calculateEMAs, getOHLCs, getSignal, getSignalMessage } from '../src/utils';
+import { getOHLCs } from '../src/utils/cryptowatch';
+import { calculateEMAs } from '../src/utils/math';
+import { getSignal, getSignalMessage } from '../src/utils/signal';
 
 const TIME_IDX = 0;
 const CLOSING_PRICE_IDX = 4;

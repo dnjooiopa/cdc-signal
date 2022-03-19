@@ -1,32 +1,12 @@
-import axios from 'axios';
-
-import config from '../config';
 import global from '../global';
 import { SignalType } from '../model/index';
+import { getOHLCs } from './cryptowatch';
 import { saveFile } from './file';
+import { calculateEMAs } from './math';
 import { getSignal } from './signal';
 
 const TIME_IDX = 0;
 const CLOSING_PRICE_IDX = 4;
-const TIME_FRAME = '86400';
-
-export async function getOHLCs(exchange: string, symbol: string): Promise<any[]> {
-    try {
-        const url = `https://api.cryptowat.ch/markets/${exchange}/${symbol}/ohlc`;
-        const options = {
-            params: {
-                after: (new Date().getTime() / 1000 - 86400 * 60).toFixed(0),
-                periods: TIME_FRAME,
-                apikey: config.API_KEY,
-            },
-        };
-        const response = await axios.get(url, options);
-        return response.data.result[TIME_FRAME];
-    } catch (err) {
-        console.log('🔴 makeRequest error:', err.message);
-        return [];
-    }
-}
 
 export async function update() {
     for (const exchangeSymbol of global.state.exchangeSymbols) {
@@ -78,17 +58,6 @@ export async function update() {
     }
     console.log('----------------------------------------------');
     saveFile(global.DATA_PATH, JSON.stringify(global.state));
-}
-
-export function calculateEMAs(prices: number[], length: number, smoothing = 2): number[] {
-    let EMAs = [];
-    const k = smoothing / (length + 1);
-
-    EMAs.push(prices.slice(0, length).reduce((total, current) => total + current, 0) / length);
-    for (const price of prices.slice(length)) {
-        EMAs.push(price * k + EMAs[EMAs.length - 1] * (1 - k));
-    }
-    return EMAs;
 }
 
 export async function addSymbol(exchange: string, symbol: string): Promise<string> {

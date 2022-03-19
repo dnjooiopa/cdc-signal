@@ -2,6 +2,12 @@ import global from '../global';
 import { SignalObject, SignalType } from '../model/index';
 import { getDateFromTime, getLocaleString } from './date';
 
+const signalEmoji = {
+    buy: '🟢',
+    sell: '🔴',
+    none: '',
+};
+
 export function getSignal(fastEma: number, fastEmaPrev: number, slowEma: number, slowEmaPrev: number): SignalType {
     if (fastEma > slowEma && fastEmaPrev < slowEmaPrev) {
         return 'buy';
@@ -26,8 +32,9 @@ export function getSignalMessage(dayOffset: number = 2): string {
         const time = crypto.times[dayIdx];
         const dateStr = getDateFromTime(time);
         if (signal !== 'none') {
-            const signalEmoji = signal === 'buy' ? '🟢' : '🔴';
-            msg += `\n ${dateStr} | ${crypto.exchange.toUpperCase()} | ${crypto.symbol.toUpperCase()} | ${signal.toUpperCase()} ${signalEmoji} at ${closingPrice}$`;
+            msg += `\n${
+                signalEmoji[signal]
+            } ${dateStr} | ${crypto.exchange.toUpperCase()} | ${crypto.symbol.toUpperCase()} | ${signal.toUpperCase()} at ${closingPrice}$`;
         }
     }
     return msg;
@@ -67,13 +74,8 @@ export function getAllSignal(dayOffset: number = 2): string {
         const time = crypto.times[dayIdx];
         const dateStr = getDateFromTime(time);
 
-        const emoji = {
-            buy: '🟢',
-            sell: '🔴',
-            none: '',
-        };
         msg += `\n ${dateStr} | ${crypto.exchange.toUpperCase()} | ${crypto.symbol.toUpperCase()} | ${signal.toUpperCase()} ${
-            emoji[signal]
+            signalEmoji[signal]
         } at ${closingPrice}$`;
     }
     return msg;
