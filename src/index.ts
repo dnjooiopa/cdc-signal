@@ -43,6 +43,10 @@ client.on('messageCreate', async (interaction) => {
             } else if (commands[1] === 'signal') {
                 const msg = getAllSignal();
                 sendMessage(interaction.channel, msg);
+            } else if (commands[1] === 'future') {
+                await update();
+                const msg = getSignalMessage(1);
+                sendMessage(interaction.channel, msg);
             }
         } else if (commands.length === 4) {
             if (commands[1] === 'add') {
